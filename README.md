@@ -1,10 +1,10 @@
 ## Raspberry Pi Kernel Builder 
 
-Building scripts based on work by Jeff Geerling: https://github.com/geerlingguy/raspberry-pi-pcie-devices/tree/master/extras/cross-compile.
+Building and installing scripts based on the Docker image created by Xose Pérez (https://github.com/xoseperez/pi-kernel), incorporating the excellent scripts created by RonR (https://forums.raspberrypi.com/memberlist.php?mode=viewprofile&u=186692) from the Raspberry Pi Forums message https://forums.raspberrypi.com/viewtopic.php?t=360054
 
 This environment can be used to [cross-compile the Raspberry Pi OS kernel](https://www.raspberrypi.org/documentation/linux/kernel/building.md) from a Linux, Windows, or Mac workstation using Docker.
 
-This build configuration has only been tested with the Raspberry Pi 4 and CM4 and run on Linux.
+This image has been successfully run to build and install a custom Linux kernel + modules on an RPi5 device.
 
 ## Bringing up the build environment
 
@@ -19,59 +19,24 @@ You will be dropped into a shell inside the container's `/build` directory with 
 
 ## Compiling the Kernel
 
-1. Clone the linux repo (or clone a fork or a different branch), this also resets it if a previous build already exists:
-
-     ```
-     ./make init
-     ```
-
-  1. Run the following command to add modules to the source:
-
-     ```
-     ./make add <path to the module> <destination path>
-     ```
-
-     For instance:
-
-     ```
-     ./make add extra/sound/soc/tas2505 sound/soc
-     ```
-
-  1. Run the following command to make a default .config file:
-
-     ```
-     ./make default
-     ```
-
-  1. (Optionally) Either edit the .config file by hand or use menuconfig:
-
-     ```
-     ./make config
-     ```
-
-  1. Compile the Kernel:
-
-     ```
-     ./make build
-     ```
-
-  1. Create a ZIP file with the kernel image and modules:
-
-     ```
-     ./make zip
-     ```
-
-> By default, the script creates a `arm64` image. For 32-bit Pi OS set the `ARCH` environment variable before running any command or after running the `init` command to reset the built:
+1. Within the Docker shell, run the 'build-kernel' script:
 
 ```
-export ARCH=arm
+./build-kernel
 ```
 
-> The number of cores used to build the image is set to the max by default. If you don't want it to use all the available cores you can set the CORES variable inside the docker container this way:
+A series of questions will be asked, answer them as you need to.
+
+## Installing the Kernel
+
+1. The output .zip file from the build of the RPi kernel will be in /root/<kernel-version-postfix>.zip, copy this file and the 'install-kernel' file to your RPi board (hint: sshfs can be used), then as root run the install file:
 
 ```
-export CORES=1
+./install-kernel <kernel-version-postfix>.zip
 ```
 
+## Full instructions
+Full instructions on using this Docker image can be found at:
 
+http://wifidiving.substack.com/rpi5-redux
 
