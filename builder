@@ -24,8 +24,8 @@ docker run --rm \
     --cap-add SYS_ADMIN \
     --name $IMAGE_NAME \
     -v "$(pwd)/.build":"/build" \
-    -v "$(pwd)/make":"/build/make" \
-    -v "$(pwd)/extra":"/build/extra" \
+    -v "$(pwd)/build-kernel":"/build/build-kernel" \
+    -v "$(pwd)/install-kernel":"/build/install-kernel" \
     -e ARCH=$ARCH \
     -e CORES=$CORES \
     -it $IMAGE_NAME \
