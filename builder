@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Defaults
-IMAGE_NAME=${IMAGE_NAME:-"cross-compile"}
+IMAGE_NAME=${IMAGE_NAME:-"rpi5-build-install"}
 ARCH=${ARCH:-"arm64"}
 CORES=${CORES:-0}
 
@@ -24,6 +24,7 @@ docker run --rm \
     --cap-add SYS_ADMIN \
     --name $IMAGE_NAME \
     -v "$(pwd)/.build":"/build" \
+    -v "$(pwd)/.src":"/usr/src" \
     -v "$(pwd)/build-kernel":"/build/build-kernel" \
     -v "$(pwd)/install-kernel":"/build/install-kernel" \
     -e ARCH=$ARCH \
